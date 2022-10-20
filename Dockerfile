@@ -11,8 +11,9 @@ FROM rel as test
 COPY requirements-test.txt .
 RUN --mount=type=cache,target=/root/.cache pip install -r requirements-test.txt
 RUN rm -Rf /root/.cache
+COPY mlops/stages ./mlops/stages
 COPY tests ./tests
-RUN pytest tests
+RUN pytest tests/**/*
 
 FROM rel as dev
 COPY requirements-debug.txt .
