@@ -1,0 +1,10 @@
+prepare:
+  raw_data: data/large.txt
+  output_file: data/transformed_large.txt
+featurize:
+  data: data/transformed_large.txt
+  output_file: data/features_large.txt
+train:
+  features: data/features_large.txt
+  model: model/prod.pkl
+  epochs: 100

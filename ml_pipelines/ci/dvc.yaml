@@ -1,0 +1,22 @@
+stages:
+  prepare:
+    wdir: ../../
+    cmd: python -m mlops.stages.prepare ${prepare}
+    deps:
+      - ${prepare.raw_data}
+    outs:
+      - ${prepare.output_file}
+  featurize:
+    wdir: ../../
+    cmd: python -m mlops.stages.featurize ${featurize}
+    deps:
+      - ${featurize.data}
+    outs:
+      - ${featurize.output_file}
+  train:
+    wdir: ../../
+    cmd: python -m mlops.stages.train ${train}
+    deps:
+      - ${train.features}
+    outs:
+      - ${train.model}
