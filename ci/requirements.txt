@@ -1,0 +1,2 @@
+hera-workflows==4.0.1
+dvc[gs]==2.30.0

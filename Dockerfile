@@ -21,3 +21,8 @@ RUN --mount=type=cache,target=/root/.cache pip install -r requirements-debug.txt
 RUN rm -Rf /root/.cache
 ENTRYPOINT ["python", "-m", "debugpy", "--listen", "0.0.0.0:5678"]
 CMD ["-m", "uvicorn", "--host", "0.0.0.0", "--port", "8080", "mlops.service.app:app"]
+
+FROM rel as dvc
+COPY requirements-dvc.txt .
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements-dvc.txt
+RUN rm -Rf /root/.cache

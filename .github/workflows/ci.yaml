@@ -1,0 +1,56 @@
+name: Run DVC pipeline
+on:
+  push:
+    branches:
+      - dev/*
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    env:
+      WORKFLOW_IMAGE: europe-west2-docker.pkg.dev/gothic-album-364814/pauljs-io/mlops-dvc:${{ github.sha }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - id: "auth"
+        name: Authenticate with Google Cloud
+        uses: "google-github-actions/auth@v0"
+        with:
+          workload_identity_provider: ${{secrets.WI_PROVIDER}}
+          service_account: ${{secrets.GSA_ARGO_WF}}
+
+      - name: Authorize access to GKE cluster
+        id: "get-credentials"
+        uses: "google-github-actions/get-gke-credentials@v0"
+        with:
+          cluster_name: "k8s-cluster"
+          location: "europe-west2-a"
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build Workflow Image
+        run: docker build . --target=dvc --tag ${WORKFLOW_IMAGE}
+
+      - name: Publish Workflow Image
+        run: docker push ${WORKFLOW_IMAGE}
+
+      - name: Create Python Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "ci/requirements.txt"
+
+      - name: Configure Python Environment
+        run: pip install -r ci/requirements.txt
+
+      - name: Submit Argo Workflow
+        run: ci/main.py --target ml_pipelines/ci/dvc.yaml

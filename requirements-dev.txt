@@ -1,5 +1,5 @@
 commitizen==2.35.0
-dvc[gs]==2.30.0
+-r requirements-dvc.txt
 -r requirements-debug.txt
 -r requirements-test.txt
 -r requirements.txt
