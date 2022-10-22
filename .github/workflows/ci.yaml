@@ -21,14 +21,14 @@ jobs:
 
       - id: "auth"
         name: Authenticate with Google Cloud
-        uses: "google-github-actions/auth@v0"
+        uses: "google-github-actions/auth@v0.8.3"
         with:
           workload_identity_provider: ${{secrets.WI_PROVIDER}}
           service_account: ${{secrets.GSA_ARGO_WF}}
 
       - name: Authorize access to GKE cluster
         id: "get-credentials"
-        uses: "google-github-actions/get-gke-credentials@v0"
+        uses: "google-github-actions/get-gke-credentials@v0.8.2"
         with:
           cluster_name: "k8s-cluster"
           location: "europe-west2-a"
