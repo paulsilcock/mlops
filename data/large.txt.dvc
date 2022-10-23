@@ -1,0 +1,4 @@
+outs:
+- md5: 794d45b58ca9eea7304dab3460bc2125
+  size: 30
+  path: large.txt

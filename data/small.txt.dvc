@@ -1,0 +1,4 @@
+outs:
+- md5: c9330d0d3e87ab288464544784e20863
+  size: 33
+  path: small.txt
