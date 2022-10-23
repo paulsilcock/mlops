@@ -3,7 +3,10 @@
 import argparse
 import re
 from typing import List, Tuple
+import pyaml
 
+from argo_workflows.models import IoArgoprojWorkflowV1alpha1WorkflowCreateRequest
+from argo_workflows.model_utils import model_to_dict
 from dvc.repo import Repo
 from dvc.repo.graph import build_graph
 from dvc.stage import PipelineStage
@@ -113,4 +116,10 @@ if __name__ == "__main__":
             for d in deps:
                 t.next(tasks[d])
 
-    wflow.create()
+    manifest = model_to_dict(
+        IoArgoprojWorkflowV1alpha1WorkflowCreateRequest(
+            workflow=wflow.build(), _check_type=False
+        )
+    )["workflow"] | {"apiVersion": "argoproj.io/v1alpha1", "kind": "Workflow"}
+
+    print(pyaml.dump(manifest))
