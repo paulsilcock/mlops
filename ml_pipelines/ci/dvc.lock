@@ -30,7 +30,7 @@ stages:
       size: 15
   train:
     cmd: python -m mlops.stages.train --features 'data/features_large.txt' --model
-      'model/prod.pkl' --epochs 100
+      'model/prod.pkl' --epochs 120
     deps:
     - path: data/features_large.txt
       md5: 4571f44654d3a1de746e75763aa523bb
@@ -40,5 +40,5 @@ stages:
       size: 568
     outs:
     - path: model/prod.pkl
-      md5: d7de104bce4e364567a415e151b3a498
+      md5: 72731d786bdb65741bab363e8399f3f5
       size: 61
