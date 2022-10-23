@@ -36,9 +36,9 @@ stages:
       md5: 4571f44654d3a1de746e75763aa523bb
       size: 15
     - path: mlops/stages/train.py
-      md5: 2f6065e20152119a3324bbdb6ddfeeaf
-      size: 482
+      md5: c5be47448532f1c63e513864f109c5cd
+      size: 568
     outs:
     - path: model/local.pkl
-      md5: a04a1020b0b305327ec8c48e27f42d40
-      size: 6
+      md5: 2f624c78db37c76fd8927e1582b6d475
+      size: 60

@@ -1,9 +1,9 @@
 import argparse
 
 
-def save_model(output_file):
+def save_model(output_file, model):
     with open(output_file, "w") as f:
-        f.write("Model!")
+        f.write(model)
 
 
 if __name__ == "__main__":
@@ -14,4 +14,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    save_model(args.model)
+    save_model(
+        args.model, f"Model train using {args.features}, for {args.epochs} iterations"
+    )
