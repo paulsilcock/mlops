@@ -34,7 +34,7 @@ jobs:
           location: "europe-west2-a"
 
       - name: Authenticate Docker
-        run: gcloud auth configure-docker --quiet
+        run: gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
 
       - name: Setup Docker BuildKit
         uses: docker/setup-buildx-action@v2
