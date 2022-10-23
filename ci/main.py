@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     # for each stage, maintain a collection of other stages it depends on:
     stage_to_deps: Dict[str, List[str]] = {}
-    tasks: Dict[str] = {}
+    tasks: Dict[str, PipelineStage] = {}
     with Workflow(
         name="blah-", generate_name=True, service_account_name=args.service_account
     ) as wflow:
