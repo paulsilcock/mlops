@@ -60,12 +60,7 @@ jobs:
         run: pip install -r ci/requirements.txt
 
       - name: Generate Argo Workflow
-        run: ci/main.py \
-          --target ml_pipelines/ci/dvc.yaml \
-          --image ${{ env.WORKFLOW_IMAGE }}:${{ github.sha }} \
-          --service_account dvc-remote \
-          --repo ${{ github.repositoryUrl }} \
-          --rev ${{ github.sha }} > workflow.yaml
+        run: ci/main.py --target ml_pipelines/ci/dvc.yaml --image ${{ env.WORKFLOW_IMAGE }}:${{ github.sha }} --service_account dvc-remote --repo ${{ github.repositoryUrl }} --rev ${{ github.sha }} > workflow.yaml
 
       - name: Submit Argo Workflow
         run: kubectl create -n dev -f workflow.yaml
