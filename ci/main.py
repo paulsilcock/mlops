@@ -2,7 +2,7 @@
 
 import argparse
 import re
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 import pyaml
 
 from argo_workflows.models import IoArgoprojWorkflowV1alpha1WorkflowCreateRequest
@@ -81,8 +81,8 @@ if __name__ == "__main__":
     edges: List[Tuple[PipelineStage, PipelineStage]] = list(stage_graph.edges)
 
     # for each stage, maintain a collection of other stages it depends on:
-    stage_to_deps = {}
-    tasks = {}
+    stage_to_deps: Dict[str, List[str]] = {}
+    tasks: Dict[str] = {}
     with Workflow(
         name="blah-", generate_name=True, service_account_name=args.service_account
     ) as wflow:
@@ -114,7 +114,7 @@ if __name__ == "__main__":
         for stage, deps in stage_to_deps.items():
             t = tasks[stage]
             for d in deps:
-                t.next(tasks[d])
+                tasks[d].next(t)
 
     manifest = model_to_dict(
         IoArgoprojWorkflowV1alpha1WorkflowCreateRequest(
