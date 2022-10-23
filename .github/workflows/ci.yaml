@@ -45,9 +45,9 @@ jobs:
           context: ./
           target: dvc
           push: true
-          tags: ${WORKFLOW_IMAGE}:${{ github.sha }}
-          cache-from: type=registry,ref=${WORKFLOW_IMAGE}:buildcache
-          cache-to: type=registry,ref=${WORKFLOW_IMAGE}:buildcache,mode=max
+          tags: ${{ env.WORKFLOW_IMAGE }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.WORKFLOW_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.WORKFLOW_IMAGE }}:buildcache,mode=max
 
       - name: Create Python Environment
         uses: actions/setup-python@v4
