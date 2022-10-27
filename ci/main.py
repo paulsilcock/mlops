@@ -25,6 +25,7 @@ def create_task(
     pipeline_stage: PipelineStage,
     image: str,
     git_artifact: GitArtifact,
+    dvc_remote: str,
 ):
     name = get_unique_name(pipeline_stage)
     target = pipeline_stage.dvcfile.relpath
@@ -36,6 +37,7 @@ def create_task(
             Parameter("target", target),
             Parameter("stage", stage),
             Parameter("image", image),
+            Parameter("dvc-remote", dvc_remote),
         ],
     )
     task.inputs.append(git_artifact)
@@ -58,6 +60,7 @@ if __name__ == "__main__":
         default=None,
     )
     parser.add_argument("--repo", help="Git repo containing pipeline code.", type=str)
+    parser.add_argument("--dvc_remote", help="Name of DVC remote to push to.", type=str)
     parser.add_argument("--rev", help="Git SHA of code to execute.", type=str)
     parser.add_argument(
         "--workflow_template",
@@ -97,6 +100,7 @@ if __name__ == "__main__":
                     dest,
                     args.image,
                     git_artifact,
+                    args.dvc_remote,
                 )
             if not src.is_data_source:
                 src_key = get_unique_name(src)
@@ -108,6 +112,7 @@ if __name__ == "__main__":
                         src,
                         args.image,
                         git_artifact,
+                        args.dvc_remote,
                     )
                 stage_to_deps[dst_key].append(src_key)
 
