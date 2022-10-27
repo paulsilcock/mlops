@@ -14,7 +14,4 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Check DVC config is up to date
-        run: |
-          if not $(dvc status -q); then
-            echo DVC cache out of sync, run dvc pull --run-cache to update DVC lock file
-          fi
+        run: dvc status -q
