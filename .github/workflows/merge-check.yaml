@@ -1,4 +1,4 @@
-name: Run DVC pipeline
+name: DVC status check
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -24,7 +24,7 @@ jobs:
           workload_identity_provider: ${{secrets.WI_PROVIDER}}
           service_account: ${{secrets.GSA_DVC_REMOTE}}
 
-      - name: Check DVC config is up to date
+      - name: Check for missing changes in DVC workspace
         run: |
           dvc pull --run-cache
           dvc status -q
