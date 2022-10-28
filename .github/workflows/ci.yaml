@@ -1,8 +1,5 @@
 name: Run DVC pipeline
-on:
-  push:
-    branches:
-      - dev/*
+on: [push]
 
 jobs:
   pipeline:
