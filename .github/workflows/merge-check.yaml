@@ -1,17 +1,30 @@
 name: Run DVC pipeline
 on:
   pull_request:
-    types:
-      - ready_for_review
+    types: [opened, synchronize, reopened, ready_for_review]
 jobs:
   dvc-status:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    if: github.event.pull_request.draft == false
+
     container: docker://ghcr.io/iterative/cml:0-dvc2-base1
 
     steps:
       - uses: actions/checkout@v3
+
+      - id: "auth"
+        name: Authenticate with Google Cloud
+        uses: "google-github-actions/auth@v0.8.3"
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          workload_identity_provider: ${{secrets.WI_PROVIDER}}
+          service_account: ${{secrets.GSA_DVC_REMOTE}}
 
       - name: Check DVC config is up to date
-        run: dvc status -q
+        run: |
+          dvc pull --run-cache
+          dvc status -q
