@@ -1,0 +1,10 @@
+prepare:
+  raw_data: data/small.txt
+  output_file: data/transformed_small.txt
+featurize:
+  data: data/transformed_small.txt
+  output_file: data/features_small.txt
+train:
+  features: data/features_small.txt
+  model: model/local.pkl
+  epochs: 50

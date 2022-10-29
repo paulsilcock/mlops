@@ -1,0 +1,44 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m mlops.stages.prepare --raw_data 'data/large.txt' --output_file
+      'data/transformed_large.txt'
+    deps:
+    - path: data/large.txt
+      md5: 794d45b58ca9eea7304dab3460bc2125
+      size: 30
+    - path: mlops/stages/prepare.py
+      md5: c5b53b5e6556d63ce73b8787a9094ff3
+      size: 605
+    outs:
+    - path: data/transformed_large.txt
+      md5: 07468e61025547fb1a444347b6fff8f8
+      size: 17
+  featurize:
+    cmd: python -m mlops.stages.featurize --data 'data/transformed_large.txt' --output_file
+      'data/features_large.txt'
+    deps:
+    - path: data/transformed_large.txt
+      md5: 07468e61025547fb1a444347b6fff8f8
+      size: 17
+    - path: mlops/stages/featurize.py
+      md5: 03fd5caa8c4ac5183f7c669f8ba848fd
+      size: 464
+    outs:
+    - path: data/features_large.txt
+      md5: 4571f44654d3a1de746e75763aa523bb
+      size: 15
+  train:
+    cmd: python -m mlops.stages.train --features 'data/features_large.txt' --model
+      'model/prod.pkl' --epochs 99
+    deps:
+    - path: data/features_large.txt
+      md5: 4571f44654d3a1de746e75763aa523bb
+      size: 15
+    - path: mlops/stages/train.py
+      md5: c5be47448532f1c63e513864f109c5cd
+      size: 568
+    outs:
+    - path: model/prod.pkl
+      md5: 8d5de34bb255f5a6c88416d7fc0aafd8
+      size: 60

@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "iterative.dvc",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "eamodio.gitlens",
+        "redhat.vscode-yaml",
+        "vivaxy.vscode-conventional-commits",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-azuretools.vscode-docker",
+        "humao.rest-client"
+    ]
+}
