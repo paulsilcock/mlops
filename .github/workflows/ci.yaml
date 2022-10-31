@@ -1,8 +1,5 @@
 name: Run DVC pipeline
-on:
-  push:
-    branches:
-      - dev/*
+on: [push]
 
 jobs:
   pipeline:
@@ -14,6 +11,8 @@ jobs:
 
     env:
       WORKFLOW_IMAGE: europe-west2-docker.pkg.dev/gothic-album-364814/pauljs-io/mlops-dvc
+      ARGO_WF_URL: https://wf.pauljs.io
+      ARGO_NS: dev
 
     steps:
       - name: Checkout repo
@@ -70,4 +69,18 @@ jobs:
           --dvc_remote gcloud > workflow.yaml
 
       - name: Submit Argo Workflow
-        run: kubectl create -n dev -f workflow.yaml
+        run: |
+          SUBMIT_OUTPUT=$(kubectl create -n ${ARGO_NS} -f workflow.yaml)
+          ARGO_WF=${SUBMIT_OUTPUT:21:-8}
+          echo "### [Argo Workflow](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})" >> $GITHUB_STEP_SUMMARY
+          kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=PodRunning --timeout=5m \
+            || echo "* Timeout waiting for pods to start" >> $GITHUB_STEP_SUMMARY
+          echo "ARGO_WF=${ARGO_WF}" >> $GITHUB_ENV
+
+      - name: Monitor Argo Workflow
+        run: |
+          kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=Completed --timeout=30m \
+            || echo "* Timeout waiting for workflow to complete" >> $GITHUB_STEP_SUMMARY
+          WF_STATUS=$(kubectl -n ${ARGO_NS} get workflow ${ARGO_WF} -ojsonpath="{.status.phase}")
+          echo "* Status: \`$WF_STATUS\`" >> $GITHUB_STEP_SUMMARY
+          [[ ${WF_STATUS} == "Succeeded" ]]
