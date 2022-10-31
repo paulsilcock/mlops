@@ -11,7 +11,7 @@ jobs:
 
     env:
       WORKFLOW_IMAGE: europe-west2-docker.pkg.dev/gothic-album-364814/pauljs-io/mlops-dvc
-      ARGO_WF_URL: wf.pauljs.io
+      ARGO_WF_URL: https://wf.pauljs.io
       ARGO_NS: dev
 
     steps:
@@ -75,7 +75,7 @@ jobs:
 
       - name: Monitor Argo Workflow
         run: |
-          echo "[### Argo Workflow](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})" >> $GITHUB_STEP_SUMMARY
+          echo "### [Argo Workflow](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})" >> $GITHUB_STEP_SUMMARY
           kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=PodRunning --timeout=2m
           kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=Completed --timeout=30m
           [[ $(kubectl -n ${ARGO_NS} get workflow ${ARGO_WF} -ojsonpath="{.status.phase}") == "Completed" ]]
