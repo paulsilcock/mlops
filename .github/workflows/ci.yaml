@@ -77,6 +77,22 @@ jobs:
             || echo "* Timeout waiting for pods to start" >> $GITHUB_STEP_SUMMARY
           echo "ARGO_WF=${ARGO_WF}" >> $GITHUB_ENV
 
+      - name: Find Pull Request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
+        with:
+          branch: ${{ github.ref_name }}
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        if: steps.find-pull-request.outputs.number
+        with:
+          message: |
+            ### Current Workflow Run: [${ARGO_WF}](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})
+            [![Workflow](https://image.thum.io/get/crop/400/${ARGO_WF_URL}/widgets/workflow-graphs/${ARGO_NS}?name=${ARGO_WF}&nodeSize=32&target=_top)](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})
+          comment_tag: workflow
+          pr_number: ${{ steps.find-pull-request.outputs.number }}
+
       - name: Monitor Argo Workflow
         run: |
           kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=Completed --timeout=30m \
