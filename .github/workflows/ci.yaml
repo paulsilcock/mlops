@@ -8,6 +8,7 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
+      pull-requests: "write"
 
     env:
       WORKFLOW_IMAGE: europe-west2-docker.pkg.dev/gothic-album-364814/pauljs-io/mlops-dvc
