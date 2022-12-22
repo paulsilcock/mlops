@@ -27,4 +27,4 @@ jobs:
       - name: Check for missing changes in DVC workspace
         run: |
           dvc pull --run-cache
-          dvc status -q
+          dvc status -q || dvc status
