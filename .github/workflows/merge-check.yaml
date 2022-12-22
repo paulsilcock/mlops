@@ -12,8 +12,6 @@ jobs:
 
     if: github.event.pull_request.draft == false
 
-    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
-
     steps:
       - uses: actions/checkout@v3
 
@@ -24,7 +22,18 @@ jobs:
           workload_identity_provider: ${{secrets.WI_PROVIDER}}
           service_account: ${{secrets.GSA_DVC_REMOTE}}
 
+      - name: Create Python Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "requirements-dvc.txt"
+
+      - name: Configure Python Environment
+        run: pip install -r requirements-dvc.txt
+
       - name: Check for missing changes in DVC workspace
         run: |
           dvc pull --run-cache
-          dvc status -q || dvc status
+          dvc status
+          dvc status -q
