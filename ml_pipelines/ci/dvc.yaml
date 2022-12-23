@@ -27,4 +27,4 @@ stages:
         - ${train.features}
         - mlops/stages/train.py
       outs:
-        - ${train.model_dir}/${item}.pkl
+        - model/${item}.pkl

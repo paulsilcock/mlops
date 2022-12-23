@@ -6,5 +6,5 @@ featurize:
   output_file: data/features_large.txt
 train:
   features: data/features_large.txt
-  model_dir: model
+  model: model/prod.pkl
   epochs: 99
