@@ -16,15 +16,10 @@ stages:
     outs:
       - ${featurize.output_file}
   train:
-    foreach:
-      - a
-      - b
-      - c
-    do:
-      wdir: ../../
-      cmd: python -m mlops.stages.train ${train}
-      deps:
-        - ${train.features}
-        - mlops/stages/train.py
-      outs:
-        - model/${item}.pkl
+    wdir: ../../
+    cmd: python -m mlops.stages.train ${train}
+    deps:
+      - ${train.features}
+      - mlops/stages/train.py
+    outs:
+      - ${train.model}
