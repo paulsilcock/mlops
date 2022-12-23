@@ -14,9 +14,7 @@ from hera import Task, Workflow, GitArtifact, Parameter, TemplateRef
 
 
 def get_unique_name(pipeline_stage: PipelineStage):
-    return (
-        f"{re.sub(r'[._/]', '-', pipeline_stage.dvcfile.relpath)}-{pipeline_stage.name}"
-    )
+    return f"{re.sub(r'[._/@]', '-', pipeline_stage.dvcfile.relpath)}-{pipeline_stage.name}"
 
 
 def create_task(
