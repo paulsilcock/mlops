@@ -13,8 +13,12 @@ from dvc.stage import PipelineStage
 from hera import Task, Workflow, GitArtifact, Parameter, TemplateRef
 
 
+def sanitize_name(name: str):
+    return re.sub(r"[._/@]", "-", name)
+
+
 def get_unique_name(pipeline_stage: PipelineStage):
-    return f"{re.sub(r'[._/@]', '-', pipeline_stage.dvcfile.relpath)}-{pipeline_stage.name}"
+    return sanitize_name(f"{pipeline_stage.dvcfile.relpath}-{pipeline_stage.name}")
 
 
 def create_task(
@@ -50,6 +54,11 @@ if __name__ == "__main__":
         type=str,
         default=None,
     )
+    parser.add_argument(
+        "--name",
+        help="Pipeline name.",
+        type=str,
+    )
     parser.add_argument("--image", help="Image to run pipeline code in.", type=str)
     parser.add_argument(
         "--service_account",
@@ -84,9 +93,7 @@ if __name__ == "__main__":
     # for each stage, maintain a collection of other stages it depends on:
     stage_to_deps: Dict[str, List[str]] = {}
     tasks: Dict[str, PipelineStage] = {}
-    with Workflow(
-        name="blah-", generate_name=True, service_account_name=args.service_account
-    ) as wflow:
+    with Workflow(name=args.name, service_account_name=args.service_account) as wflow:
         git_artifact = GitArtifact("source", "/src", args.repo, args.rev)
         for (dest, src) in edges:
             dst_key = get_unique_name(dest)

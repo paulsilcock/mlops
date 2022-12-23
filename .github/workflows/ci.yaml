@@ -62,6 +62,7 @@ jobs:
       - name: Generate Argo Workflow
         run: >-
           ci/main.py
+          --name ${{ env.GITHUB_REF_NAME }}-${{ env.GITHUB_RUN_NUMBER }}
           --target ml_pipelines/ci/dvc.yaml
           --image ${{ env.WORKFLOW_IMAGE }}:${{ github.sha }}
           --service_account dvc-remote
@@ -75,7 +76,7 @@ jobs:
           ARGO_WF=${SUBMIT_OUTPUT:21:-8}
           echo "### [Argo Workflow](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})" >> $GITHUB_STEP_SUMMARY
           kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=PodRunning --timeout=1m \
-            || echo "* Timeout waiting for pods to start" >> $GITHUB_STEP_SUMMARY
+            || (echo "* Timeout waiting for pods to start" >> $GITHUB_STEP_SUMMARY && exit 1)
           echo "ARGO_WF=${ARGO_WF}" >> $GITHUB_ENV
 
       - name: Find Pull Request
