@@ -74,7 +74,7 @@ jobs:
           SUBMIT_OUTPUT=$(kubectl create -n ${ARGO_NS} -f workflow.yaml)
           ARGO_WF=${SUBMIT_OUTPUT:21:-8}
           echo "### [Argo Workflow](${ARGO_WF_URL}/workflows/${ARGO_NS}/${ARGO_WF})" >> $GITHUB_STEP_SUMMARY
-          kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=PodRunning --timeout=5m \
+          kubectl -n ${ARGO_NS} wait workflow ${ARGO_WF} --for=condition=PodRunning --timeout=1m \
             || echo "* Timeout waiting for pods to start" >> $GITHUB_STEP_SUMMARY
           echo "ARGO_WF=${ARGO_WF}" >> $GITHUB_ENV
 
