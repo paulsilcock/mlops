@@ -62,7 +62,7 @@ jobs:
       - name: Generate Argo Workflow
         run: >-
           ci/main.py
-          --name ${{ env.GITHUB_REF_NAME }}-${{ env.GITHUB_RUN_NUMBER }}
+          --name ${{ github.ref_name }}-${{ github.run_number }}-${{ github.run_attempt }}
           --target ml_pipelines/ci/dvc.yaml
           --image ${{ env.WORKFLOW_IMAGE }}:${{ github.sha }}
           --service_account dvc-remote
