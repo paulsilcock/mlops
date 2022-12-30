@@ -11,7 +11,7 @@ While the project was a success, I've always felt some clear opportunities were 
 
 As always the tech industry is quick to adapt, and since then we have seen the adoption of a collection of practices known as "MLOps", essentially the application of the familiar DevOps mindset to ML-powered software.
 
-There are a lot of shiny tools, frameworks and platforms that fall under the MLOps umbrella. Many of these focus on the operational aspects of ML services, namely deployment and monitoring. This is understandable, but an often overlooked aspect in delivering software quickly is ensuring a good developer experience. Recalling my own experiences, it should have been easier for those involved in the delivery chain to test their changes, at production-scale, with tight feedback loops. So my focus here is to evaluate with toolchains that make this easier, and hopefully help others along the way.
+There are a lot of shiny tools, frameworks and platforms that fall under the MLOps umbrella. Many of these focus on the operational aspects of ML services, namely deployment and monitoring. This is understandable, but an often overlooked aspect in delivering software quickly is ensuring a [good developer experience](https://martinfowler.com/articles/developer-effectiveness.html). Recalling my own experiences, it should have been easier for those involved in the delivery chain to test their changes, at production-scale, with tight feedback loops. So my focus here is to evaluate with toolchains that make this easier, and hopefully help others along the way.
 
 ## What's been done so far?
 
