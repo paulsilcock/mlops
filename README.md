@@ -20,7 +20,7 @@ This repo contains a skeleton project
 - [DVC](https://dvc.org/) for data set and ML model versioning
   - essentially extends `git` to provide versioning for ML pipelines and data artifacts.
   - DVC makes reproducibility easy, tying together data inputs, code, models and experiments to `git` history.
-  - Pipelines are basically DAGs, and DVC will track pipeline dependencies and only run pipeline stages that have changed, saving compute time and compute resources.
+  - Pipelines are basically DAGs, and DVC will track pipeline dependencies and only run pipeline stages that have changed, saving time and compute resources.
 - [Argo Workflows](https://argoproj.github.io/argo-workflows/) to run DVC pipelines at scale
   - The GitHub Action for this repo converts DVC pipeline to an Argo Workflow, allowing DVC pipeline stages to run in parallel in a Kubernetes cluster.
   - ![Pipeline](./pipeline.png)
